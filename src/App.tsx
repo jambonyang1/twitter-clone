@@ -8,11 +8,11 @@ import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 import { useEffect, useState } from "react";
 import LoadingScreen from "./components/loading-screen";
-
+import { auth } from "./firebase";
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const init = async () => {
-    // wait for firebase
+    await auth.authStateReady();
     setIsLoading(false);
   };
   useEffect(() => {
