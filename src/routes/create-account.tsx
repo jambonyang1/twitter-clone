@@ -100,7 +100,7 @@ const Input = styled.input`
   &[type="submit"] {
     cursor: pointer;
     &:hover {
-      opacity: ;
+      opacity: 0.9;
     }
   }
 `;
