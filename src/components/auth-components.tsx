@@ -9,12 +9,11 @@ export const Wrapper = styled.div`
 `;
 
 export const Title = styled.h1`
-  font-size: 42px;
+  font-size: 60px;
 `;
 
 export const Form = styled.form`
   margin-top: 50px;
-  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -29,6 +28,7 @@ export const Input = styled.input`
   font-size: 16px;
   &[type="submit"] {
     cursor: pointer;
+    background-color: #1d9bf0;
     &:hover {
       opacity: 0.9;
     }
@@ -37,6 +37,7 @@ export const Input = styled.input`
 
 export const Error = styled.span`
   font-weight: 600;
+  margin-top: 10px;
   color: tomato;
 `;
 

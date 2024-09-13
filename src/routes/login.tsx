@@ -52,7 +52,7 @@ const Login = () => {
   };
   return (
     <Wrapper>
-      <Title>Log into 𝕏</Title>
+      <Title>𝕏</Title>
       <Form onSubmit={onSubmit}>
         <Input
           onChange={onChange}
@@ -68,10 +68,7 @@ const Login = () => {
           placeholder="Password"
           type="password"
         ></Input>
-        <Input
-          type="submit"
-          value={isLoading ? "Loading..." : "Log in"}
-        ></Input>
+        <Input type="submit" value={isLoading ? "로딩중..." : "로그인"}></Input>
       </Form>
       {error !== "" ? <Error>{error}</Error> : null}
       <Switcher>

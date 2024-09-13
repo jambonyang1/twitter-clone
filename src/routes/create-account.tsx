@@ -66,7 +66,7 @@ const CreateAccount = () => {
   };
   return (
     <Wrapper>
-      <Title>Join 𝕏</Title>
+      <Title>𝕏</Title>
       <Form onSubmit={onSubmit}>
         <Input
           onChange={onChange}
@@ -91,7 +91,7 @@ const CreateAccount = () => {
         ></Input>
         <Input
           type="submit"
-          value={isLoading ? "Loading..." : "Create Account"}
+          value={isLoading ? "로딩중..." : "계정 생성"}
         ></Input>
       </Form>
       {error !== "" ? <Error>{error}</Error> : null}
