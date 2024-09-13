@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
+import { FirebaseError } from "firebase/app";
 
 const CreateAccount = () => {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ const CreateAccount = () => {
   };
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError("");
     if (isLoading || name === "" || email === "" || password === "") return;
     try {
       setIsLoading(true);
@@ -46,6 +48,9 @@ const CreateAccount = () => {
       navigate("/");
     } catch (e) {
       // set error
+      if (e instanceof FirebaseError) {
+        setError(e.message);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -53,36 +58,35 @@ const CreateAccount = () => {
   };
   return (
     <Wrapper>
-      <div className="wrapper">
-        <Title>Join 𝕏</Title>
-        <Form onSubmit={onSubmit}>
-          <Input
-            onChange={onChange}
-            name="name"
-            value={name}
-            placeholder="Name"
-            type="text"
-          ></Input>
-          <Input
-            onChange={onChange}
-            name="email"
-            value={email}
-            placeholder="Email"
-            type="email"
-          ></Input>
-          <Input
-            onChange={onChange}
-            name="password"
-            value={password}
-            placeholder="Password"
-            type="password"
-          ></Input>
-          <Input
-            type="submit"
-            value={isLoading ? "Loading..." : "Create Account"}
-          ></Input>
-        </Form>
-      </div>
+      <Title>Join 𝕏</Title>
+      <Form onSubmit={onSubmit}>
+        <Input
+          onChange={onChange}
+          name="name"
+          value={name}
+          placeholder="Name"
+          type="text"
+        ></Input>
+        <Input
+          onChange={onChange}
+          name="email"
+          value={email}
+          placeholder="Email"
+          type="email"
+        ></Input>
+        <Input
+          onChange={onChange}
+          name="password"
+          value={password}
+          placeholder="Password"
+          type="password"
+        ></Input>
+        <Input
+          type="submit"
+          value={isLoading ? "Loading..." : "Create Account"}
+        ></Input>
+      </Form>
+      {error !== "" ? <Error>{error}</Error> : null}
     </Wrapper>
   );
 };
@@ -90,19 +94,11 @@ const CreateAccount = () => {
 export default CreateAccount;
 
 const Wrapper = styled.div`
-  width: 100%;
-  height: 100%;
+  padding: 50px 0px;
+  width: 420px;
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  .wrapper {
-    padding: 50px 0px;
-    width: 420px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
 `;
 
 const Title = styled.h1`
@@ -111,6 +107,7 @@ const Title = styled.h1`
 
 const Form = styled.form`
   margin-top: 50px;
+  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -129,4 +126,9 @@ const Input = styled.input`
       opacity: 0.9;
     }
   }
+`;
+
+const Error = styled.span`
+  font-weight: 600;
+  color: tomato;
 `;
