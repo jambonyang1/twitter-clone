@@ -11,6 +11,7 @@ import {
   Error,
   Switcher,
 } from "../components/auth-components";
+import GithubButton from "../components/github-btn";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -76,6 +77,7 @@ const Login = () => {
       <Switcher>
         계정이 없으신가요? <Link to="/create-account">회원가입</Link>
       </Switcher>
+      <GithubButton />
     </Wrapper>
   );
 };
