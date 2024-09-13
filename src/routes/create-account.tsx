@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import { FirebaseError } from "firebase/app";
+import { Link } from "react-router-dom";
 
 const CreateAccount = () => {
   const navigate = useNavigate();
@@ -87,6 +88,9 @@ const CreateAccount = () => {
         ></Input>
       </Form>
       {error !== "" ? <Error>{error}</Error> : null}
+      <Switcher>
+        계정이 있으신가요? <Link to="/login">로그인</Link>
+      </Switcher>
     </Wrapper>
   );
 };
@@ -131,4 +135,11 @@ const Input = styled.input`
 const Error = styled.span`
   font-weight: 600;
   color: tomato;
+`;
+
+const Switcher = styled.span`
+  margin-top: 20px;
+  a {
+    color: #1d9bf0;
+  }
 `;
