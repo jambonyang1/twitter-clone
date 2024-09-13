@@ -9,6 +9,8 @@ import reset from "styled-reset";
 import { useEffect, useState } from "react";
 import LoadingScreen from "./components/loading-screen";
 import { auth } from "./firebase";
+import ProtectedRoutes from "./components/protected-routes";
+
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const init = async () => {
@@ -32,7 +34,11 @@ export default App;
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: (
+      <ProtectedRoutes>
+        <Layout />
+      </ProtectedRoutes>
+    ),
     children: [
       {
         path: "",
@@ -62,7 +68,7 @@ const GlobalStyles = createGlobalStyle`
   body {
     background-color: black;
     color:white;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
-
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
+
 `;
