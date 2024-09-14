@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
-
+import { addDoc, collection } from "firebase/firestore";
+import { auth, db } from "../firebase";
 const PostTweetForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [tweet, setTweet] = useState("");
@@ -14,8 +15,28 @@ const PostTweetForm = () => {
       setFile(files[0]);
     }
   };
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const user = auth.currentUser;
+    if (!user || isLoading || tweet === "" || tweet.length > 300) return;
+
+    try {
+      setIsLoading(true);
+      await addDoc(collection(db, "tweets"), {
+        tweet,
+        createdAt: Date.now(),
+        username: user.displayName || "Anonymous",
+        userId: user.uid,
+      });
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
-    <Form>
+    <Form onSubmit={onSubmit}>
       <TextArea
         rows={6}
         maxLength={300}
