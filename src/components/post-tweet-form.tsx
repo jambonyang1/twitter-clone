@@ -1,7 +1,9 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { addDoc, collection } from "firebase/firestore";
-import { auth, db } from "../firebase";
+import { addDoc, collection, updateDoc } from "firebase/firestore";
+import { auth, storage, db } from "../firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
 const PostTweetForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [tweet, setTweet] = useState("");
@@ -23,12 +25,22 @@ const PostTweetForm = () => {
 
     try {
       setIsLoading(true);
-      await addDoc(collection(db, "tweets"), {
+      const doc = await addDoc(collection(db, "tweets"), {
         tweet,
         createdAt: Date.now(),
         username: user.displayName || "Anonymous",
         userId: user.uid,
       });
+      if (file) {
+        const locationRef = ref(storage, `tweets/${user.uid}/${doc.id}`);
+        const result = await uploadBytes(locationRef, file);
+        const url = await getDownloadURL(result.ref);
+        await updateDoc(doc, {
+          photo: url,
+        });
+      }
+      setTweet("");
+      setFile(null);
     } catch (e) {
       console.log(e);
     } finally {
