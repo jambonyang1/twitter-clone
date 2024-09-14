@@ -11,7 +11,7 @@ import {
   Error,
   Switcher,
 } from "../components/auth-components";
-import GithubButton from "../components/github-btn";
+import SocialLogin from "../components/social-login";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -58,14 +58,14 @@ const Login = () => {
           onChange={onChange}
           name="email"
           value={email}
-          placeholder="Email"
+          placeholder="이메일"
           type="email"
         ></Input>
         <Input
           onChange={onChange}
           name="password"
           value={password}
-          placeholder="Password"
+          placeholder="비밀번호"
           type="password"
         ></Input>
         <Input type="submit" value={isLoading ? "로딩중..." : "로그인"}></Input>
@@ -74,7 +74,7 @@ const Login = () => {
       <Switcher>
         계정이 없으신가요? <Link to="/create-account">회원가입</Link>
       </Switcher>
-      <GithubButton />
+      <SocialLogin />
     </Wrapper>
   );
 };

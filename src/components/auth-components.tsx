@@ -29,6 +29,7 @@ export const Input = styled.input`
   &[type="submit"] {
     cursor: pointer;
     background-color: #1d9bf0;
+    transition: 0.2s ease;
     &:hover {
       opacity: 0.9;
     }

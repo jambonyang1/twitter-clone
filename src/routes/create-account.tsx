@@ -72,21 +72,21 @@ const CreateAccount = () => {
           onChange={onChange}
           name="name"
           value={name}
-          placeholder="Name"
+          placeholder="이름"
           type="text"
         ></Input>
         <Input
           onChange={onChange}
           name="email"
           value={email}
-          placeholder="Email"
+          placeholder="이메일"
           type="email"
         ></Input>
         <Input
           onChange={onChange}
           name="password"
           value={password}
-          placeholder="Password"
+          placeholder="비밀번호"
           type="password"
         ></Input>
         <Input
