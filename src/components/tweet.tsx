@@ -6,6 +6,7 @@ import { deleteObject, ref } from "firebase/storage";
 
 const Tweet = ({ username, photo, tweet, userId, id }: ITweet) => {
   const user = auth.currentUser;
+  const onEdit = async () => {};
   const onDelete = async () => {
     const ok = confirm("트윗을 삭제하시겠습니까?");
     if (!ok || user?.uid !== userId) return;
@@ -24,9 +25,12 @@ const Tweet = ({ username, photo, tweet, userId, id }: ITweet) => {
       <Column>
         <Username>{username}</Username>
         <Payload>{tweet}</Payload>
-        {user?.uid === userId ? (
-          <DeleteButton onClick={onDelete}>삭제</DeleteButton>
-        ) : null}
+        <Editor>
+          <EditButton>편집하기</EditButton>
+          {user?.uid === userId ? (
+            <DeleteButton onClick={onDelete}>삭제</DeleteButton>
+          ) : null}
+        </Editor>
       </Column>
       <Column>{photo ? <Photo src={photo} /> : null}</Column>
     </Wrapper>
@@ -41,6 +45,7 @@ const Wrapper = styled.div`
   padding: 20px;
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 15px;
+  grid-auto-rows: minmax(100px, auto);
 `;
 
 const Column = styled.div`
@@ -63,6 +68,22 @@ const Username = styled.span`
 const Payload = styled.p`
   margin: 10px 0px;
   font-size: 18px;
+  word-break: break-all; /* 텍스트가 넘칠 때 강제로 줄 바꿈 */
+`;
+
+const Editor = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+const EditButton = styled.span`
+  color: gray;
+  font-weight: 600;
+  border: 0;
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
 `;
 
 const DeleteButton = styled.button`
