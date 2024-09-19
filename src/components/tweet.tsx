@@ -107,13 +107,15 @@ const Payload = styled.p`
 
 const PayloadEdit = styled.textarea`
   margin: 10px 0px;
+  padding: 10px;
   width: 100%;
   height: auto;
   font-size: 18px;
   resize: none;
   background-color: black;
   color: white;
-  border: none;
+  border: 1px #1d9bf0 dashed;
+  border-radius: 12px;
 `;
 
 const ButtonsWrapper = styled.div`
