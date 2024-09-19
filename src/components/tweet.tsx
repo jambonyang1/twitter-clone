@@ -1,8 +1,13 @@
 import styled from "styled-components";
 import { ITweet } from "./timeline";
 import { auth, db, storage } from "../firebase";
-import { deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { deleteObject, ref } from "firebase/storage";
+import { deleteDoc, deleteField, doc, updateDoc } from "firebase/firestore";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 import { useState } from "react";
 
 const Tweet = ({ username, photo, tweet, userId, id }: ITweet) => {
@@ -40,6 +45,33 @@ const Tweet = ({ username, photo, tweet, userId, id }: ITweet) => {
       console.log(e);
     }
   };
+
+  const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = e.target;
+    if (files && files.length === 1) {
+      const locationRef = ref(storage, `tweets/${user?.uid}/${id}`);
+      const result = await uploadBytes(locationRef, files[0]);
+      const url = await getDownloadURL(result.ref);
+      await updateDoc(doc(db, "tweets", id), {
+        photo: url,
+      });
+    }
+  };
+
+  const onFileDelete = async () => {
+    const ok = confirm("사진을 삭제하시겠습니까?");
+    if (!ok || !photo || user?.uid !== userId) return;
+    try {
+      await updateDoc(doc(db, "tweets", id), {
+        photo: deleteField(),
+      });
+      const photoRef = ref(storage, `tweets/${userId}/${id}`);
+      await deleteObject(photoRef);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <Wrapper>
       <Column>
@@ -63,7 +95,38 @@ const Tweet = ({ username, photo, tweet, userId, id }: ITweet) => {
           </ButtonsWrapper>
         ) : null}
       </Column>
-      <Column>{photo ? <Photo src={photo} /> : null}</Column>
+      <Column>
+        <ButtonsWrapper>
+          {photo ? (
+            <DeleteButton onClick={onFileDelete}>삭제</DeleteButton>
+          ) : (
+            <>
+              <AttachFileButton htmlFor="newFile">
+                <svg
+                  data-slot="icon"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path
+                    clip-rule="evenodd"
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-11.25a.75.75 0 0 0-1.5 0v2.5h-2.5a.75.75 0 0 0 0 1.5h2.5v2.5a.75.75 0 0 0 1.5 0v-2.5h2.5a.75.75 0 0 0 0-1.5h-2.5v-2.5Z"
+                  ></path>
+                </svg>
+              </AttachFileButton>
+              <AttachFileInput
+                onChange={onFileChange}
+                type="file"
+                id="newFile" // post-tweet-form의 input의 id와 겹칠 수 있으니 id명 변경. 그렇지 않으면 위의 라벨을 눌러 사진을 업로드하면 이곳에서 업로드 되는 것이 아니라 위의 제출 input에서 사진이 업로드 됨.
+                accept="image/*"
+              />
+            </>
+          )}
+        </ButtonsWrapper>
+        {photo ? <Photo src={photo} /> : null}
+      </Column>
     </Wrapper>
   );
 };
@@ -82,8 +145,11 @@ const Wrapper = styled.div`
 const Column = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   &:last-child {
-    place-self: end;
+    align-items: flex-end;
+    gap: 10px;
+    flex-direction: column-reverse;
   }
 `;
 
@@ -146,4 +212,17 @@ const DeleteButton = styled.button`
   text-transform: uppercase;
   border-radius: 5px;
   cursor: pointer;
+`;
+
+const AttachFileButton = styled.label`
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  svg {
+    fill: #1d9bf0;
+  }
+`;
+
+const AttachFileInput = styled.input`
+  display: none;
 `;
