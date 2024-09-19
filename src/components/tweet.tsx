@@ -96,35 +96,37 @@ const Tweet = ({ username, photo, tweet, userId, id }: ITweet) => {
         ) : null}
       </Column>
       <Column>
-        <ButtonsWrapper>
-          {photo ? (
-            <DeleteButton onClick={onFileDelete}>삭제</DeleteButton>
-          ) : (
-            <>
-              <AttachFileButton htmlFor="newFile">
-                <svg
-                  data-slot="icon"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <path
-                    clip-rule="evenodd"
-                    fill-rule="evenodd"
-                    d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-11.25a.75.75 0 0 0-1.5 0v2.5h-2.5a.75.75 0 0 0 0 1.5h2.5v2.5a.75.75 0 0 0 1.5 0v-2.5h2.5a.75.75 0 0 0 0-1.5h-2.5v-2.5Z"
-                  ></path>
-                </svg>
-              </AttachFileButton>
-              <AttachFileInput
-                onChange={onFileChange}
-                type="file"
-                id="newFile" // post-tweet-form의 input의 id와 겹칠 수 있으니 id명 변경. 그렇지 않으면 위의 라벨을 눌러 사진을 업로드하면 이곳에서 업로드 되는 것이 아니라 위의 제출 input에서 사진이 업로드 됨.
-                accept="image/*"
-              />
-            </>
-          )}
-        </ButtonsWrapper>
+        {user?.uid === userId ? (
+          <ButtonsWrapper>
+            {photo ? (
+              <DeleteButton onClick={onFileDelete}>삭제</DeleteButton>
+            ) : (
+              <>
+                <AttachFileButton htmlFor="newFile">
+                  <svg
+                    data-slot="icon"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                  >
+                    <path
+                      clip-rule="evenodd"
+                      fill-rule="evenodd"
+                      d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-11.25a.75.75 0 0 0-1.5 0v2.5h-2.5a.75.75 0 0 0 0 1.5h2.5v2.5a.75.75 0 0 0 1.5 0v-2.5h2.5a.75.75 0 0 0 0-1.5h-2.5v-2.5Z"
+                    ></path>
+                  </svg>
+                </AttachFileButton>
+                <AttachFileInput
+                  onChange={onFileChange}
+                  type="file"
+                  id="newFile" // post-tweet-form의 input의 id와 겹칠 수 있으니 id명 변경. 그렇지 않으면 위의 라벨을 눌러 사진을 업로드하면 이곳에서 업로드 되는 것이 아니라 위의 제출 input에서 사진이 업로드 됨.
+                  accept="image/*"
+                />
+              </>
+            )}
+          </ButtonsWrapper>
+        ) : null}
         {photo ? <Photo src={photo} /> : null}
       </Column>
     </Wrapper>
