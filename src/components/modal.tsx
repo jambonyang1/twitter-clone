@@ -2,9 +2,10 @@ import styled from "styled-components";
 
 interface ModalProps {
   title: string;
-  content: string;
+  content: any;
   isOpen: boolean;
-  onClose?: () => void;
+  onClose: () => void;
+  onConfirm: () => void;
 }
 
 const Modal = ({
@@ -12,6 +13,7 @@ const Modal = ({
   content = "모달의 콘텐츠를 넣어주세요",
   isOpen,
   onClose,
+  onConfirm,
 }: ModalProps) => {
   if (!isOpen) return null;
 
@@ -21,7 +23,13 @@ const Modal = ({
         <h2>{title}</h2>
         <p>{content}</p>
         <ModalBtns>
-          <Btn onClick={onClose} color="#1d9bf0">
+          <Btn
+            onClick={() => {
+              onConfirm();
+              onClose();
+            }}
+            color="#1d9bf0"
+          >
             확인
           </Btn>
           <Btn onClick={onClose} color="gray">
@@ -48,7 +56,7 @@ const ModalOverRay = styled.div`
 `;
 
 const ModalContent = styled.div`
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: #5f5f5f;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -56,7 +64,7 @@ const ModalContent = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
   text-align: left;
 `;
 
