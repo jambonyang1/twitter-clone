@@ -192,15 +192,6 @@ const NameInput = styled.input`
   width: 70%;
 `;
 
-const Button = styled.button`
-  background-color: #1d9bf0;
-  border: none;
-  border-radius: 5px;
-  width: 60px;
-  font: 30px;
-  color: white;
-`;
-
 const Tweets = styled.div`
   display: flex;
   flex-direction: column;
